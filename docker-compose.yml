@@ -1,42 +1,39 @@
 version: "3.7"
 
 networks:
-    cunhaacNET:
-        name: cunhaacNET
-        driver: bridge
-    reverse-proxy:
-        external: true
+  cunhaacNET:
+    name: cunhaacNET
+    driver: bridge
+  reverse-proxy:
+    external: true
 
 volumes:
-    postgres-data:
+  mysql-data:
 
 services:
-    # database:
-    #     image: postgres:12
-    #     container_name: dev-database
-    #     hostname: dev-database
-    #     #restart: always
-    #     networks:
-    #         - cunhaacNET
-    #     ports:
-    #         - "5432:5432"
-    #     env_file:
-    #         - configs/postgres.env
-    #     volumes:
-    #         - "postgres-data:/var/lib/postgresql/data"
+  database:
+    image: mysql:5.7
+    container_name: dev-database
+    hostname: dev-database
+    restart: always
+    networks:
+      - cunhaacNET
+    expose:
+      - 3306
+    env_file:
+      - configs/database.env
+    volumes:
+      - "mysql-data:/var/lib/mysql"
 
-    frontend:
-        build: frontend/
-        image: cunhaacnet-frontend:latest
-        container_name: cunhaacNET-frontend
-        hostname: cunhaacNET-frontend
-        networks:
-            - cunhaacNET
-            - reverse-proxy
-        # env_file:
-        #     - configs/postgres.env
-        environment:
-            - FLASK_APP=main.py
-            - MODULE_NAME=cunhaacNET.main
-        # depends_on:
-        #     - database
+  frontend:
+    build: frontend/
+    image: cunhaacnet-frontend:latest
+    container_name: cunhaacNET-frontend
+    hostname: cunhaacNET-frontend
+    networks:
+      - cunhaacNET
+      - reverse-proxy
+    env_file:
+      - configs/flask.env
+    depends_on:
+      - database

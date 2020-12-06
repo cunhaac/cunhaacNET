@@ -144,3 +144,5 @@ cython_debug/
 
 /database/helpers/secrets.py
 !/database/helpers/secrets.example.py
+/configs
+!/configs/.env.example
