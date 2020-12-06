@@ -13,8 +13,8 @@ volumes:
 services:
   database:
     image: mysql:5.7
-    container_name: dev-database
-    hostname: dev-database
+    container_name: cunhaacnet-db
+    hostname: cunhaacnet-db
     restart: always
     networks:
       - cunhaacNET
@@ -28,8 +28,8 @@ services:
   frontend:
     build: src/
     image: cunhaacnet-frontend:latest
-    container_name: cunhaacNET-frontend
-    hostname: cunhaacNET-frontend
+    container_name: cunhaacnet-frontend
+    hostname: cunhaacnet-frontend
     networks:
       - cunhaacNET
       - reverse-proxy
