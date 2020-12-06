@@ -16,7 +16,5 @@ COPY . /app
 
 EXPOSE 80
 
-CMD ls -la
-CMD pwd
 CMD flask run --host=0.0.0.0 --port=80
 
