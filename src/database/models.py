@@ -22,7 +22,7 @@ class Users(db.Model, UserMixin):
     roles = db.relationship('Roles', secondary='User_Roles')
 
     def __repr__(self):
-        return f'{self.id}, {self.username}, {self.name}, {self.email}'
+        return f'{self.username}'
 
     def set_password(self, password):
         self.secure_password = generate_password_hash(password)
