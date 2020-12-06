@@ -142,7 +142,7 @@ cython_debug/
 
 # Secrets
 
-/database/helpers/secrets.py
-!/database/helpers/secrets.example.py
-/configs
+/configs/database.env
+/configs/flask.env
+/configs/mail.env
 !/configs/.env.example
