@@ -35,5 +35,7 @@ services:
       - reverse-proxy
     env_file:
       - configs/flask.env
+      - configs/database.env
+      - configs/mail.env
     depends_on:
       - database
