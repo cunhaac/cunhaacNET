@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from time import sleep
 from flask import render_template, redirect, request, url_for
 from flask_mail import Message
 
@@ -9,11 +8,14 @@ from users.routes.register import valid_email, valid_password, min_chars
 from users.routes.login import cunhaac_login
 from database.models import Users, generate_password_hash
 
+email = request.form['email']
+
+
 def send_reset_email(true_email):
 	token = true_email.get_reset_token()
 	msg = Message('Password Reset Request - cunhaacNET',
                   sender='testing_your_ass@sapo.pt',
-                  recipients=['rplcunha@gmail.com'])
+                  recipients=[email])
 
 	msg.body = f''' To reset your password, visit the following link:
 	            {url_for('reset_password', token=token, _external=True)}
@@ -30,7 +32,6 @@ def reset_request():
 	request_error = None
 
 	if request.method == 'POST':
-		email = request.form['email']
 		true_email = Users.query.filter_by(email=email).first()
 		if true_email is None:
 			request_error = 'Email do not exist!'
@@ -68,6 +69,6 @@ def reset_password(token):
 				db.session.commit()
 				return redirect('/')
 			except Exception as e:
-				#FIXME RETURN THE EXCEPTION IN BLANK PAGE, PROBABLY SOME 403 ERROR HERE
+				# FIXME RETURN THE EXCEPTION IN BLANK PAGE, PROBABLY SOME 403 ERROR HERE
 				return str(e)
 	return render_template('reset_password.html', reset_error=reset_error)
