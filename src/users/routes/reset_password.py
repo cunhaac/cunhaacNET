@@ -8,12 +8,14 @@ from users.routes.register import valid_email, valid_password, min_chars
 from users.routes.login import cunhaac_login
 from database.models import Users, generate_password_hash
 
+recipients = []
+
 
 def send_reset_email(true_email):
 	token = true_email.get_reset_token()
 	msg = Message('Password Reset Request - cunhaacNET',
                   sender='testing_your_ass@sapo.pt',
-                  recipients=[email])
+                  recipients=recipients[0])
 
 	msg.body = f''' To reset your password, visit the following link:
 	            {url_for('reset_password', token=token, _external=True)}
@@ -30,8 +32,8 @@ def reset_request():
 	request_error = None
 
 	if request.method == 'POST':
-		global email
 		email = request.form['email']
+		recipients.append(email)
 		true_email = Users.query.filter_by(email=email).first()
 		if true_email is None:
 			request_error = 'Email do not exist!'
