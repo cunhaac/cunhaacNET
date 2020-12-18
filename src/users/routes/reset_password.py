@@ -8,8 +8,6 @@ from users.routes.register import valid_email, valid_password, min_chars
 from users.routes.login import cunhaac_login
 from database.models import Users, generate_password_hash
 
-email = request.form['email']
-
 
 def send_reset_email(true_email):
 	token = true_email.get_reset_token()
@@ -32,6 +30,8 @@ def reset_request():
 	request_error = None
 
 	if request.method == 'POST':
+		global email
+		email = request.form['email']
 		true_email = Users.query.filter_by(email=email).first()
 		if true_email is None:
 			request_error = 'Email do not exist!'
